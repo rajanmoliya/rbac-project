@@ -1,3 +1,4 @@
+const { asyncHandler } = require("../middlewares/errorHandler");
 const Project = require("../models/Project");
 
 exports.createProject = async (req, res) => {
@@ -90,6 +91,7 @@ exports.allProjects = async (req, res) => {
 
     res.status(200).json({
       msg: "All projects",
+      count: projects.length,
       data: projects,
     });
   } catch (error) {
@@ -98,3 +100,25 @@ exports.allProjects = async (req, res) => {
     });
   }
 };
+
+exports.paginateProjects = asyncHandler(async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const results = {};
+
+  results.next = endIndex < (await Project.countDocuments().exec());
+  results.previous = startIndex > 0;
+
+  results.results = await Project.find().limit(limit).skip(startIndex).exec();
+
+  res.status(200).json({
+    msg: "Paginated projects",
+    limit,
+    page,
+    data: results,
+  });
+});

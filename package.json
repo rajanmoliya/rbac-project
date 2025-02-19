@@ -1,14 +1,18 @@
 {
-  "name": "rbac-test",
+  "name": "rbac-project-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API for RBAC",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "test": "",
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "RBAC",
+    "API"
+  ],
+  "author": "Rajan",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",

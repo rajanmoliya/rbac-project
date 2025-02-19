@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { asyncHandler } = require("../middlewares/errorHandler");
 
 const createToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
@@ -8,7 +9,7 @@ const createToken = (id, role) => {
   });
 };
 
-exports.register = async (req, res) => {
+exports.register = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
 
   const hashedPasword = await bcrypt.hash(password, 10);
@@ -34,9 +35,9 @@ exports.register = async (req, res) => {
     msg: "User created successfully",
     data: { user, token },
   });
-};
+});
 
-exports.login = async (req, res) => {
+exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -61,4 +62,4 @@ exports.login = async (req, res) => {
     msg: "User logged in successfully",
     data: { user, token },
   });
-};
+});
