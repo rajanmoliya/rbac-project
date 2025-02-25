@@ -4,12 +4,12 @@ const Project = require("../models/Project");
 exports.createProject = async (req, res) => {
   try {
     const { title, description } = req.body;
-    const user = req.user.id;
+    // const user = req.user.id;
 
     const project = await Project.create({
       title,
       description,
-      user,
+      user: req.user.id,
     });
 
     await project.save();
@@ -27,7 +27,7 @@ exports.createProject = async (req, res) => {
 
 exports.updateProject = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const { title, description, status } = req.body;
     const { id } = req.params;
 
     const project = await Project.findById(id);
@@ -40,7 +40,7 @@ exports.updateProject = async (req, res) => {
 
     const updatedProject = await Project.findByIdAndUpdate(
       id,
-      { title, description },
+      { title, description, status },
       { new: true }
     );
 
